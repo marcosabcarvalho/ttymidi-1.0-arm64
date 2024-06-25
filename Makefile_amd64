@@ -1,0 +1,22 @@
+all:
+	gcc src/ttymidi.c -o ttymidi -lasound -lpthread
+clean:
+	rm ttymidi
+install:
+	mkdir -p $(DESTDIR)/bin
+	cp ttymidi $(DESTDIR)/bin
+uninstall:
+	rm $(DESTDIR)/bin/ttymidi
+package: all
+	mkdir -p ttymidi-1.0-amd64/DEBIAN
+	mkdir -p ttymidi-1.0-amd64/usr/local/bin
+	echo "Package: ttymidi" > ttymidi-1.0-amd64/DEBIAN/control
+	echo "Version: 1.0" >> ttymidi-1.0-amd64/DEBIAN/control
+	echo "Section: sound" >> ttymidi-1.0-amd64/DEBIAN/control
+	echo "Priority: optional" >> ttymidi-1.0-amd64/DEBIAN/control
+	echo "Architecture: amd64" >> ttymidi-1.0-amd64/DEBIAN/control
+	echo "Depends: libasound2 (>= 1.2.8-1), libasound2-dev (>= 1.2.8-1)" >> ttymidi-1.0-amd64/DEBIAN/control
+	echo "Maintainer: Marcos Antonio <marcosabcarvalho@gmail.com>" >> ttymidi-1.0-amd64/DEBIAN/control
+	echo "Description: ttyMIDI allows external serial devices to interface with the ALSA sequencer." >> ttymidi-1.0-amd64/DEBIAN/control
+	cp ttymidi ttymidi-1.0-amd64/usr/local/bin/
+	dpkg-deb --build ttymidi-1.0-amd64
