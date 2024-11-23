@@ -1,0 +1,38 @@
+Configuração do ttymidi
+
+    Instale o ttymidi: Se o ttymidi não estiver instalado, você pode baixá-lo e compilá-lo:
+
+sudo apt update
+sudo apt install git build-essential
+git clone https://github.com/cjbarnes18/ttymidi.git
+cd ttymidi
+make
+sudo make install
+
+Conecte o Arduino via USB: Depois de conectar, localize a porta serial do Arduino (geralmente algo como /dev/ttyUSB0 ou /dev/ttyACM0):
+
+ls /dev/tty*
+
+Anote a porta que aparece após conectar o Arduino.
+
+Execute o ttymidi: Substitua /dev/ttyUSB0 pela porta identificada:
+
+ttymidi -s /dev/ttyUSB0 -b 115200
+
+A opção -b 115200 define a taxa de comunicação serial (deve ser a mesma configurada no Arduino).
+
+Conecte ao ALSA MIDI: Após iniciar o ttymidi, ele deve aparecer como um dispositivo MIDI no sistema. Use o aconnect para listar e conectar dispositivos MIDI:
+
+aconnect -l
+
+Isso exibirá uma lista dos dispositivos MIDI disponíveis. Conecte o ttymidi ao software de sua escolha (por exemplo, fluidsynth ou seu sequenciador Python):
+
+    aconnect [ttymidi_client] [sequenciador_client]
+
+    Substitua [ttymidi_client] e [sequenciador_client] pelos IDs dos dispositivos listados.
+
+Configurando o Arduino para o ttymidi
+
+Certifique-se de que a comunicação serial no Arduino esteja configurada para 115200 baud, como no exemplo que forneci acima:
+
+Serial.begin(115200);
